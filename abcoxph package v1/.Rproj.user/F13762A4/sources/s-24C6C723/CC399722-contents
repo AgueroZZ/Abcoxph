@@ -1,0 +1,106 @@
+library(ggplot2)
+library(tidyverse)
+library(latex2exp)
+
+#### Plot of baseline hazard:
+TEXT_SIZE <- 30
+theme_set(theme_classic(base_size = 15))
+### Define true to be a dataframe with time and hazard, two columns
+p1 <- ggplot(data = true) + aes(x = time, y = hazard) + geom_line() +ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank(), text = element_text(size = TEXT_SIZE)) + labs(x = "t", y = TeX('$h_{0}(t)$'))
+
+p2 <- ggplot()  + geom_line(data = true[1:round(length(haz)/3),],aes(x = time[1:round(length(haz)/3)], y = hazard[1:round(length(haz)/3)])) + 
+  geom_line(aes_string(x = tdom[(round(length(haz)/3) + 1):(round(2*length(haz))/3)], y = haz[(round(length(haz)/3) + 1):(round(2*length(haz))/3)])) + 
+  geom_line(aes_string(x = tdom[(round(2*length(haz)/3) + 1):length(haz)], y = haz[(round(2*length(haz)/3) + 1):length(haz)])) +
+  ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank(), text = element_text(size = TEXT_SIZE)) + labs(x = "t", y = TeX('$h_{0}(t)$'))
+
+
+#### Plot of smoothing result with true function:
+plot_smooth_withtrue <- function(proposed_model,truefun,TEXT_SIZE){
+  theme_set(theme_classic(base_size = 15))
+  RW2BINS <- proposed_model$model_data$RW2BINS
+  model_data <- proposed_model$model_data
+  margmeanall <- proposed_model$marginal_latent$marginal_mean_smoothing
+  margsd <- proposed_model$marginal_latent$marginal_sd_smoothing
+  simplot <- dplyr::tibble(
+    x = sort(unique(model_data$A[[1]]$u)),
+    mymean = margmeanall,
+    mymeanlower = mymean - 2*margsd,
+    mymeanupper = mymean + 2*margsd
+  ) %>%
+    ggplot2::ggplot(ggplot2::aes(x = x)) +
+    ggplot2::ylim(0,10) +
+    ggplot2::geom_ribbon(ggplot2::aes(ymin = exp(mymeanlower),ymax = ifelse(exp(mymeanupper)>10,10,exp(mymeanupper))),fill = "orange",alpha = .2) +
+    ggplot2::geom_line(ggplot2::aes(y = exp(mymean),color = "Proposed")) +
+    geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)])),color = "True")) + labs(x = "u", y =  TeX('$exp(\\gamma(u)$)')) +
+    scale_colour_manual(values=c("blue","black")) + ggplot2::theme(legend.position = c(.75, .92),legend.title = element_blank(),text = element_text(size = TEXT_SIZE),legend.background = element_blank())
+  simplot
+}
+
+
+
+
+#### Plot of smoothing result without true function:
+plot_smooth <- function(proposed_model,TEXT_SIZE){
+  theme_set(theme_classic(base_size = 15))
+  RW2BINS <- proposed_model$model_data$RW2BINS
+  model_data <- proposed_model$model_data
+  margmeanall <- proposed_model$marginal_latent$marginal_mean_smoothing
+  margsd <- proposed_model$marginal_latent$marginal_sd_smoothing
+  simplot <- dplyr::tibble(
+    x = sort(unique(model_data$A[[1]]$u)),
+    mymean = margmeanall,
+    mymeanlower = mymean - 2*margsd,
+    mymeanupper = mymean + 2*margsd
+  ) %>%
+    ggplot2::ggplot(ggplot2::aes(x = x)) +
+    ggplot2::ylim(0.5,1.5) +
+    ggplot2::geom_ribbon(ggplot2::aes(ymin = exp(mymeanlower),ymax = ifelse(exp(mymeanupper)>10,10,exp(mymeanupper))),fill = "orange",alpha = .2) +
+    ggplot2::geom_line(ggplot2::aes(y = exp(mymean),color = "Proposed")) +
+    labs(x = "u", y =  TeX('$exp(\\gamma(u)$)')) + 
+    scale_colour_manual(values=c("blue")) + ggplot2::theme(legend.position = c(.75, .92),legend.title = element_blank(),text = element_text(size = TEXT_SIZE),legend.background = element_blank())
+  simplot
+}
+
+
+#### Plot of posterior distribution of hyper-parameter
+
+plot_hyper <- function(abcoxfit, TEXT_SIZE){
+  theme_set(theme_classic(base_size = 15))
+  priorfuncsigma <- function(x) (2/x) * exp(abcoxfit$theta_logprior(-2*log(x)))
+  margpost1 <- abcoxfit$marginal_hyper
+  sigmapostplot1 <- margpost1$margpost %>%
+    mutate(sigma_post = exp(sigmalogmargpost)) %>%
+    ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+    ggplot2::theme_classic() +
+    ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+    ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+    ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+    ggplot2::scale_colour_manual(values = c("black","blue")) +
+    ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank(), text = element_text(size = TEXT_SIZE))
+  sigmapostplot1
+}
+
+
+plot_hyper_kid <- function(abcoxfit, TEXT_SIZE){
+  theme_set(theme_classic(base_size = 15))
+  priorfuncsigma <- function(x) (2/x) * exp(abcoxfit$theta_logprior(-2*log(x)))
+  margpost1 <- abcoxfit$marginal_hyper
+  sigmapostplot1 <- margpost1$margpost %>%
+    mutate(sigma_post = exp(sigmalogmargpost)) %>%
+    ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+    ggplot2::theme_classic() +
+    ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+    ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+    ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+    ggplot2::geom_vline(ggplot2::aes(xintercept = 0.695, colour = "PL Estimate")) + 
+    ggplot2::scale_colour_manual(values=c('red',"black","blue")) + 
+    ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank(), text = element_text(size = TEXT_SIZE))
+  sigmapostplot1
+}
+
+
+
+##### Implement:
+plot_smooth_withtrue(proposed_model = proposed_model, truefun = truefunc, 30)
+plot_smooth(proposed_model = model_fit, 30)
+plot_hyper(model_fit,30)

@@ -1,0 +1,7 @@
+data <- survival::kidney
+data <- data.frame(time = data$time, status = data$status, age = data$age, sex = data$sex, GN = ifelse(data$disease ))
+
+
+prior <- 
+
+model <- abcoxph_AGHQ_setup()

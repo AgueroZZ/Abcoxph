@@ -1,0 +1,512 @@
+ggplot2::geom_line(ggplot2::aes(y = exp(mymean)),color = "blue") +
+ggplot2::xlab("") +
+ggplot2::ylab("")
+simplot+ geom_line(aes(y = exp(meanhere)),color = "red") +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)]))),color = "black") + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.85, .85),element_blank())+ scale_fill_manual(values=c("blue", "red", "black"),
+name="",
+breaks=c("Proposed", "INLA", "Truth"),
+labels=c("Proposed", "INLA", "Truth"))
+simplot+ geom_line(aes(y = exp(meanhere)),color = "red") +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)]))),color = "black") + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.85, .85),element_blank(size = 15))+ scale_fill_manual(values=c("blue", "red", "black"),
+name="",
+breaks=c("Proposed", "INLA", "Truth"),
+labels=c("Proposed", "INLA", "Truth"))
+?element_blank
+simplot+ geom_line(aes(y = exp(meanhere)),color = "red") +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)]))),color = "black") + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.85, .85),element_rect())+ scale_fill_manual(values=c("blue", "red", "black"),
+name="",
+breaks=c("Proposed", "INLA", "Truth"),
+labels=c("Proposed", "INLA", "Truth"))
+?element_text
+simplot+ geom_line(aes(y = exp(meanhere)),color = "red") +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)]))),color = "black") + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.85, .85),element_blank(),element_text(size = 15))+ scale_fill_manual(values=c("blue", "red", "black"),
+name="",
+breaks=c("Proposed", "INLA", "Truth"),
+labels=c("Proposed", "INLA", "Truth"))
+simplot+ geom_line(aes(y = exp(meanhere)),color = "red") +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)]))),color = "black") + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.85, .85),element_blank())+ scale_fill_manual(values=c("blue", "red", "black"),
+name="",
+breaks=c("Proposed", "INLA", "Truth"),
+labels=c("Proposed", "INLA", "Truth"))
+simplot+ geom_line(aes(y = exp(meanhere)),color = "red") +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)]))),color = "black") + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())+ scale_fill_manual(values=c("blue", "red", "black"),
+name="",
+breaks=c("Proposed", "INLA", "Truth"),
+labels=c("Proposed", "INLA", "Truth"))
+simplot+ geom_line(aes(y = exp(meanhere),color = "INLA")) +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)])),color = "Truth")) + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())+ scale_fill_manual(values=c("blue", "red", "black"),
+name="",
+breaks=c("Proposed", "INLA", "Truth"),
+labels=c("Proposed", "INLA", "Truth"))
+simplot <- dplyr::tibble(
+x = sort(unique(model_data$A[[1]]$u)),
+mymean = margmeanall,
+mymeanlower = mymean - 2*margsd,
+mymeanupper = mymean + 2*margsd
+) %>%
+ggplot2::ggplot(ggplot2::aes(x = x)) +
+ggplot2::ylim(0,10) +
+ggplot2::geom_ribbon(ggplot2::aes(ymin = exp(mymeanlower),ymax = ifelse(exp(mymeanupper)>10,10,exp(mymeanupper))),fill = "orange",alpha = .2) +
+ggplot2::geom_line(ggplot2::aes(y = exp(mymean),color = "Proposed")) +
+ggplot2::xlab("") +
+ggplot2::ylab("")
+simplot+ geom_line(aes(y = exp(meanhere),color = "INLA")) +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)])),color = "True")) + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())+ scale_fill_manual(values=c("blue", "red", "black"),
+name="",
+breaks=c("Proposed", "INLA", "True"),
+labels=c("Proposed", "INLA", "True"))
+simplot+ geom_line(aes(y = exp(meanhere),color = "INLA")) +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)])),color = "True")) + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())+ scale_colour_manual(values=c("red", "blue","black"))
+theme_set(theme_classic())
+simplot <- dplyr::tibble(
+x = sort(unique(model_data$A[[1]]$u)),
+mymean = margmeanall,
+mymeanlower = mymean - 2*margsd,
+mymeanupper = mymean + 2*margsd
+) %>%
+ggplot2::ggplot(ggplot2::aes(x = x)) +
+ggplot2::ylim(0,10) +
+ggplot2::geom_ribbon(ggplot2::aes(ymin = exp(mymeanlower),ymax = ifelse(exp(mymeanupper)>10,10,exp(mymeanupper))),fill = "orange",alpha = .2) +
+ggplot2::geom_line(ggplot2::aes(y = exp(mymean),color = "Proposed")) +
+ggplot2::xlab("") +
+ggplot2::ylab("")
+simplot+ geom_line(aes(y = exp(meanhere),color = "INLA")) +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)])),color = "True")) + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())+ scale_colour_manual(values=c("red", "blue","black"))
+theme_set(theme_classic(base_size = 15))
+simplot <- dplyr::tibble(
+x = sort(unique(model_data$A[[1]]$u)),
+mymean = margmeanall,
+mymeanlower = mymean - 2*margsd,
+mymeanupper = mymean + 2*margsd
+) %>%
+ggplot2::ggplot(ggplot2::aes(x = x)) +
+ggplot2::ylim(0,10) +
+ggplot2::geom_ribbon(ggplot2::aes(ymin = exp(mymeanlower),ymax = ifelse(exp(mymeanupper)>10,10,exp(mymeanupper))),fill = "orange",alpha = .2) +
+ggplot2::geom_line(ggplot2::aes(y = exp(mymean),color = "Proposed")) +
+ggplot2::xlab("") +
+ggplot2::ylab("")
+simplot+ geom_line(aes(y = exp(meanhere),color = "INLA")) +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)])),color = "True")) + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())+ scale_colour_manual(values=c("red", "blue","black"))
+Inlaresult
+#Transform baseline hazard
+h0 <- lapply(Inlaresult$marginals.random[["baseline.hazard"]],
+function(X) {inla.tmarginal(exp, X)}
+)
+#Compute summary statistics for plotting
+h0.stats <- lapply(h0, inla.zmarginal)
+h0.df <- data.frame(t = Inlaresult$summary.random[["baseline.hazard"]]$ID)
+h0.df <- cbind(h0.df, do.call(rbind, lapply(h0.stats, unlist)))
+rownames(h0.df) <- c()
+inla_base <- tibble()
+check <- h0.df$t
+for (i in c(0:729)) {
+if(any(check <= i)){
+indx <- which(check <= i)[length(which(check <= i))]
+inla_base <- rbind(inla_base,cbind(t=i,h0.df[indx,-1]))
+}
+}
+ggplot(inla_base, aes(x = t)) + geom_line(aes(y = mean),colour = "black",linetype = "solid",size = 0.5) + geom_ribbon(aes(ymin = quant0.025,ymax = quant0.975),fill = "lightgrey",alpha = .5) + theme_classic(base_size = 28) + labs(x = "t", y = TeX('$h_{0}(t)$'))
+ggplot(inla_base, aes(x = t)) + geom_line(aes(y = mean),colour = "black",linetype = "solid",size = 0.5) + geom_ribbon(aes(ymin = quant0.025,ymax = quant0.975),fill = "lightgrey",alpha = .5) + theme_classic(base_size = 15) + labs(x = "t", y = TeX('$h_{0}(t)$'))
+ggplot(data = true) + aes(x = time, y = hazard) + geom_line() +theme_classic(base_size = 15) + labs(x = "t", y = TeX('$h_{0}(t)$'))
+abcox_fit
+plot_sigma <- function(abcox_fit){
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post),colour = "black",linetype = "solid",size = 0.5) +
+ggplot2::labs(x = "",y = "") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma)),colour = 'black',linetype = 'dashed',size = 0.5) +
+ggplot2::theme_classic(base_size = 15)
+sigmapostplot1
+}
+plot_sigma(abcox_fit)
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma)),colour = "Prior", size = 0.5) +
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma)),colour = "Prior", size = 0.5)
+sigmapostplot1
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5)
+sigmapostplot1
+datainla <- data_frame(x = Inlaresult$marginals.hyperpar$`Precision for exposure_binned`[,1], y = Inlaresult$marginals.hyperpar$`Precision for exposure_binned`[,2])
+sigma <- 1/sqrt(datainla$x)
+sigma_dens <- 2*(sigma^(-3))*datainla$y
+datainla_sigma <- data_frame(sigma = sigma[-c(1:8)], sigma_dens = sigma_dens[-c(1:8)])
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'red'),linetype = 'dotdash',size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "blue","black")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())
+sigmapostplot1
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "blue","black")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())
+sigmapostplot1
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())
+sigmapostplot1
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank()) +
+ggplot2::xlim(0,2.5)
+sigmapostplot1
+sigma
+sigma
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank()) +
+ggplot2::xlim(0.04,2.5)
+sigmapostplot1
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank()) +
+ggplot2::xlim(0.5,2.5)
+sigmapostplot1
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank()) +
+ggplot2::xlim(0.1,2.5)
+sigmapostplot1
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank()) +
+ggplot2::xlim(0,2)
+sigmapostplot1
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank()) +
+sigmapostplot1
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())
+sigmapostplot1
+datainla <- data_frame(x = Inlaresult$marginals.hyperpar$`Precision for exposure_binned`[,1], y = Inlaresult$marginals.hyperpar$`Precision for exposure_binned`[,2])
+sigma <- 1/sqrt(datainla$x)
+sigma_dens <- 2*(sigma^(-3))*datainla$y
+datainla_sigma <- data_frame(sigma = sigma[-c(1:8)], sigma_dens = sigma_dens[-c(1:8)])
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())
+sigmapostplot1
+datainla <- data_frame(x = Inlaresult$marginals.hyperpar$`Precision for exposure_binned`[,1], y = Inlaresult$marginals.hyperpar$`Precision for exposure_binned`[,2])
+sigma <- 1/sqrt(datainla$x)
+sigma_dens <- 2*(sigma^(-3))*datainla$y
+datainla_sigma <- data_frame(sigma = sigma[-c(1:5)], sigma_dens = sigma_dens[-c(1:5)])
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())
+sigmapostplot1
+sigma
+datainla_sigma <- data_frame(sigma = sigma[-c(1:3)], sigma_dens = sigma_dens[-c(1:3)])
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())
+sigmapostplot1
+datainla <- data_frame(x = Inlaresult$marginals.hyperpar$`Precision for exposure_binned`[,1], y = Inlaresult$marginals.hyperpar$`Precision for exposure_binned`[,2])
+sigma <- 1/sqrt(datainla$x)
+sigma_dens <- 2*(sigma^(-3))*datainla$y
+datainla_sigma <- data_frame(sigma = sigma[-c(1:2)], sigma_dens = sigma_dens[-c(1:2)])
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank())
+sigmapostplot1
+theme_set(theme_classic(base_size = 15))
+priorfuncsigma <- function(x) (2/x) * exp(abcox_fit$theta_logprior(-2*log(x)))
+margpost1 <- abcox_fit$marginal_hyper
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot2::ggplot(ggplot2::aes(x = sigma)) +
+ggplot2::theme_classic() +
+ggplot2::geom_line(ggplot2::aes(y = sigma_post,colour = "Proposed"),,size = 0.5) +
+ggplot2::labs(x = TeX('$\\sigma'),y = "Density") +
+ggplot2::geom_line(ggplot2::aes(y = priorfuncsigma(sigma),colour = "Prior"), size = 0.5) +
+ggplot2::geom_line(data = datainla_sigma, aes(y = sigma_dens, x = sigma, colour = 'INLA'),size = 0.5) +
+ggplot2::scale_colour_manual(values=c("red", "black","blue")) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank(), text = element_text(size=20))
+sigmapostplot1
+simplot+ geom_line(aes(y = exp(meanhere),color = "INLA")) +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)])),color = "True")) + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank(),text = element_text(size=20))+ scale_colour_manual(values=c("red", "blue","black"))
+simplot+ geom_line(aes(y = exp(meanhere),color = "INLA")) +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)])),color = "True")) + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.9, .85),legend.title = element_blank(),text = element_text(size=20))+ scale_colour_manual(values=c("red", "blue","black"))
+simplot+ geom_line(aes(y = exp(meanhere),color = "INLA")) +
+geom_line(aes(y = exp(truefunc(x) - truefunc(x[round(RW2BINS/2)])),color = "True")) + labs(x = "u", y =  TeX('$\\gamma(u)$')) +
+ggplot2::theme(legend.position = c(.88, .9),legend.title = element_blank(),text = element_text(size=20))+ scale_colour_manual(values=c("red", "blue","black"))
+theme_set(theme_classic(base_size = 15))
+true <- data_frame(time = tdom[tdom<=728.80400], hazard = haz[tdom<=728.80400])
+ggplot(data = true) + aes(x = time, y = hazard) + geom_line() +ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank(), text = element_text(size=20)) + labs(x = "t", y = TeX('$h_{0}(t)$'))
+#Transform baseline hazard
+h0 <- lapply(Inlaresult$marginals.random[["baseline.hazard"]],
+function(X) {inla.tmarginal(exp, X)}
+)
+#Compute summary statistics for plotting
+h0.stats <- lapply(h0, inla.zmarginal)
+h0.df <- data.frame(t = Inlaresult$summary.random[["baseline.hazard"]]$ID)
+h0.df <- cbind(h0.df, do.call(rbind, lapply(h0.stats, unlist)))
+rownames(h0.df) <- c()
+inla_base <- tibble()
+check <- h0.df$t
+for (i in c(0:729)) {
+if(any(check <= i)){
+indx <- which(check <= i)[length(which(check <= i))]
+inla_base <- rbind(inla_base,cbind(t=i,h0.df[indx,-1]))
+}
+}
+theme_set(theme_classic(base_size = 15))
+ggplot(inla_base, aes(x = t)) + geom_line(aes(y = mean),colour = "black",linetype = "solid",size = 0.5) + geom_ribbon(aes(ymin = quant0.025,ymax = quant0.975),fill = "lightgrey",alpha = .5) + ggplot2::theme(legend.position = c(.85, .85),legend.title = element_blank(), text = element_text(size=20)) + labs(x = "t", y = TeX('$h_{0}(t)$'))
+save(model_fit,file = "SimulationModel.Rdata")
+margpost1 <- model_fit$marginal_hyper
+thetapostplot1 <- margpost1$margpost %>%
+mutate(theta_post = exp(thetalogmargpost)) %>%
+ggplot(aes(x = theta)) +
+theme_classic() +
+geom_line(aes(y = theta_post),colour = "black",size = 0.5) +
+geom_line(aes(y = priorfunc(theta)),colour = "black",linetype = "dashed",size = 0.5) +
+# coord_cartesian(xlim = c(0,20)) +
+labs(y = "Density",x = "") +
+theme(text = element_text(size = 15))
+thetapostplot1
+priorfunc <- function(x) exp(model_data$theta_logprior(x))
+priorfuncsigma <- function(x) (2/x) * exp(model_data$theta_logprior(-2*log(x)))
+thetapostplot1 <- margpost1$margpost %>%
+mutate(theta_post = exp(thetalogmargpost)) %>%
+ggplot(aes(x = theta)) +
+theme_classic() +
+geom_line(aes(y = theta_post),colour = "black",size = 0.5) +
+geom_line(aes(y = priorfunc(theta)),colour = "black",linetype = "dashed",size = 0.5) +
+# coord_cartesian(xlim = c(0,20)) +
+labs(y = "Density",x = "") +
+theme(text = element_text(size = 15))
+thetapostplot1
+thetapostplot1
+margpost1
+theta_post = exp(margpost1$margpost$thetalogmargpost)
+theta_post
+theta
+theta <- margpost1$margpost$theta
+theta
+theta <- c(margpost1$margpost$theta)
+theta
+theta_post
+diff(theta)
+diff(theta) * theta_post[-1]
+sum(diff(theta) * theta_post[-1])
+sum(diff(theta) * theta_post[-length(theta_post)])
+(sum(diff(theta) * theta_post[-1]) + sum(diff(theta) * theta_post[-length(theta_post)]))/2
+margpost1$margpost$sigma
+sigma <- c(margpost1$margpost$sigma)
+sigma_dens
+sigma_dens <- exp(margpost1$margpost$sigmalogmargpost)
+sigma_dens
+sigmapostplot1 <- margpost1$margpost %>%
+mutate(sigma_post = exp(sigmalogmargpost)) %>%
+ggplot(aes(x = sigma)) +
+theme_classic() +
+geom_line(aes(y = sigma_post),colour = "black",size = 0.5) +
+geom_line(aes(y = priorfuncsigma(sigma)),colour = "black",linetype = "dashed",size = 0.5) +
+labs(x = "",y = "Density") +
+theme(text = element_text(size = 15))
+sigmapostplot1
+sigma_dens
+ddd <- data.frame(sigma,sigma_dens)
+ddd
+arrange(ddd,by = sigma)
+(sum(diff(ddd$sigma) * ddd$sigma_dens[-1]) + sum(diff(ddd$sigma) * ddd$sigma_dens[-length(ddd$sigma_dens)]))/2
+diff(ddd$sigma)
+ddd$sigma
+ddd <- arrange(ddd,by = sigma)
+(sum(diff(ddd$sigma) * ddd$sigma_dens[-1]) + sum(diff(ddd$sigma) * ddd$sigma_dens[-length(ddd$sigma_dens)]))/2
+View(abcox_fit)
+library(abcoxph)
+options(mc.cores = 2L)
+data <- survival::kidney
+data <- data.frame(time = data$time, status = data$status, age = data$age,sex = data$sex,GN = ifelse(data$disease == "GN",1,0),AN = ifelse(data$disease == "AN",1,0),PKD = ifelse(data$disease == "PKD",1,0), id = data$id)
+prior <- prior_setup(theta_number = 80, theta_grid = c(-2,10),theta_prior_a = .5,theta_prior_u = 2)
+model <- abcoxph_setup(time~age + sex + GN + AN + PKD + id(id), cens = "status",data = data)
+model_fit <- abcox_fit(model,PARALLEL_EXECUTION = T)
+plot_theta(model_fit)
+plot_sigma(model_fit)
+rlang::last_error()
+model_fit <- abcox_fit(model,PARALLEL_EXECUTION = F)
+library(abcoxph)
+abcoxph:::Q_matrix_rw2()
+abcoxph:::Q_matrix_rw2
+library(abcoxph)

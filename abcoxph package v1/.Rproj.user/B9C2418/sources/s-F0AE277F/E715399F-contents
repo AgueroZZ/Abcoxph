@@ -1,0 +1,24 @@
+library(tidyverse)
+# For kidney Example
+data <- survival::kidney
+data <- data.frame(time = data$time, status = data$status, age = data$age,sex = data$sex,GN = ifelse(data$disease == "GN",1,0),AN = ifelse(data$disease == "AN",1,0),PKD = ifelse(data$disease == "PKD",1,0), id = data$id)
+prior <- prior_setup(theta_number = 30, theta_grid = c(-2,10),theta_prior_a = .5,theta_prior_u = 2)
+model <- abcoxph_setup(time~age + sex + GN + AN + PKD + id(id), cens = "status",data = data, prior_control = prior)
+begin_time <- Sys.time()
+model_fit <- abcox_fit(model,PARALLEL_EXECUTION = F)
+end_time <- Sys.time()
+end_time - begin_time
+plot_theta(model_fit)
+plot_sigma(model_fit)
+
+
+
+
+data <- survival::kidney
+data <- data.frame(time = data$time, status = data$status, age = data$age,sex = data$sex,GN = ifelse(data$disease == "GN",1,0),AN = ifelse(data$disease == "AN",1,0),PKD = ifelse(data$disease == "PKD",1,0), id = data$id)
+prior <- prior_setup_AGHQ(theta_number = 5, startingvals = 1,theta_prior_a = .5,theta_prior_u = 2)
+model <- abcoxph_AGHQ_setup(time~age + sex + GN + AN + PKD + id(id), cens = "status",data = data, prior_control = prior)
+model_fit2 <- abcox_fit(model,PARALLEL_EXECUTION = F)
+model_fit2$marginal_latent
+
+

@@ -1,0 +1,155 @@
+### Likelihood ###
+# This script contains functions for computing the likelihood for the coxph model
+# This includes the gradient and hessian and any helper functions
+# Most (all?) of these functions are not exported and are hidden from users, though
+# they are still documented.
+
+#' Prepare the data for computing the log-likelihood
+#'
+#' @description Take a latent field vector and return the (transformed) linear predictors that we want.
+#'
+#' @param W Parameter vector. First n-1 elements are (transformed) linear predictors, then Gamma and beta.
+#' @param model_data A list of class "abcox_modeldata" as returned by model_setup().
+#'
+#' @return A vector of transformed linear predictors.
+#'
+prep_data_for_log_lik <- function(W,model_data) {
+  delta <- W[1:(model_data$n-1)]
+  delta
+}
+
+#' Get the observed times from a data set.
+#'
+#' @description Take a latent field vector and return the (transformed) linear predictors that we want.
+#'
+#' @param model_data A list of class "abcox_modeldata" as returned by model_setup().
+#'
+#' @return A vector
+#'
+Get_Observed_time <- function(model_data){
+  observed <- model_data$times[model_data$censoring == 1]
+  observed
+}
+
+#' @description Function that determines the k observed time's indexes
+#' @param model_data Model data that contains all times and all censoring indicators
+#' @return A vector that contains all the indexes of observed times in the dataset
+Get_Observed_index <- function(model_data){
+  index <- which(model_data$od %in% model_data$od[model_data$censoring == 1])
+  index
+}
+
+#' @description Function that creates the i-th Risk Set.
+#' @param timei the i-th observed time,
+#' @param model_data data that contains all entry times and observed times
+#' @return the indexes of observations that are in the i-th Risk Set.
+Get_Risk_Set_i <- function(timei,model_data){
+  set <- timei<=model_data$times & timei>=model_data$entry
+  set <- which(set)
+  set
+}
+
+
+#' @description Function that creates all the Risk sets using Get_Risk_Set_i function.
+Get_all_Risk_Set <- function(model_data){
+  observed <- Get_Observed_time(model_data)
+  lapply(observed,Get_Risk_Set_i,model_data)
+}
+
+
+
+#' @description Compute the log likelihood with respect to W = (delta,gamma,beta).
+#' The gamma and beta parts are zero.
+#' @param W the latent field, a vector of dimension Wd. The first Nd elements are the
+#      "deltas", and are what's actually used to compute the likelihood.
+#' @param model_data: a list containing the output of model_setup; A and X don't need to be
+#               included (for efficiency). The dimensions of everything are what's needed.
+#' @return the corresponding log-likelihood value.
+#'
+log_likelihood <- function(W,model_data) {
+  delta <- prep_data_for_log_lik(W,model_data)
+  delta <- c(0,delta)
+  ob <- Get_Observed_index(model_data)
+  adj <- Get_Adj(model_data)$adjRank
+  compute_loglik_for_ith_obs <- function(i) {
+    # deltavec is a vector of deltas for each Risk Set.
+    deltavec <- delta[adj[i]:length(delta)]
+    # Note we are adding both minus signs in here.
+    -log(exp(matrixStats::logSumExp(delta[i]-deltavec)))
+  }
+  # Now apply that function to the whole list and sum the result to get the answer
+  lapply(ob,compute_loglik_for_ith_obs) %>% reduce(sum)
+}
+
+
+
+grad_log_likelihood <- function(W,model_data) {
+  # Arguments: see log_likelihood
+  # Returns: numeric vector of the same length as W representing the gradient.
+  #          It will have zeroes on the end of it (see appendix of paper).
+  # Prepare the deltas that we will be using for computation of gradient.
+  delta <- prep_data_for_log_lik(W,model_data)
+  delta <- c(0,delta)
+  # Get the index of observed times and corresponding Risk sets.
+  ob <- Get_Observed_index(model_data)
+  adj <- Get_Adj(model_data)$adjRank
+  # Helper to compute the ith gradient term.
+  compute_i_gradient_term <- function(i) {
+    grad <- rep(0,model_data$n)
+    deltavec <- delta[adj[ob[i]]:length(delta)]
+    deno <- exp(matrixStats::logSumExp(delta[ob[i]]-deltavec))
+    grad[adj[ob[i]]:length(delta)] <- exp(delta[ob[i]]-deltavec)/(deno)
+    grad[ob[i]] <- -(exp(matrixStats::logSumExp(delta[ob[i]]-deltavec))-1)/(deno)
+    grad[1] <- 0
+    grad
+  }
+  # Go ahead to use compute_i_gradient_term to compute all the gradients, and sum to a vector
+  final_grad <- lapply(1:length(ob),compute_i_gradient_term)
+  final_grad <- Reduce('+',final_grad)
+  final_grad <- final_grad[-1]
+  # The gradient is the concatenation of all these (vector) terms,
+  # plus zeroes on the end to make it as long as W
+  gradient_back <- rep(0,length(W) - length(final_grad))
+  c(final_grad,gradient_back)
+}
+
+
+#Compute the negated Hessian of the log-likelihood
+compute_one_denominator <- function(delta,i) {
+  # All of the likelihood quantities require that denominator
+  # vector for each observation. It's a cumulative sum. Write
+  # one function that computes it efficiently.
+  # delta: vector of length n
+  # i: index of denominator you want
+  n <- length(delta)
+  dd <- delta[i] - delta[i:n]
+  exp(matrixStats::logSumExp(dd)) - 1
+}
+
+compute_denominator <- function(delta) {
+  as.numeric(map(1:length(delta),~compute_one_denominator(delta,.x)))
+}
+
+make_hess_vec2 <- function(model_data,delta,i) {
+  # Make the vector that is used to create the hessian
+  n <- length(delta)
+  denom <- compute_one_denominator(delta,i)
+  if (model_data$censoring[i] == 0) return(sparseVector(0,0,n))
+  dd <- delta[i] - delta[i:n]
+  out <- exp(dd) / (1 + denom)
+  c(rep(0,i-1),out)
+}
+
+hessian_log_likelihood <- function(W,model_data) {
+  delta <- c(0,prep_data_for_log_lik(W,model_data))
+  n <- length(delta)
+  gg <- map(which(model_data$censoring==1),~make_hess_vec2(model_data,delta,.x))
+  # as(diag(as.numeric(reduce(gg,~.x+.y))) - tcrossprod(gg %>% reduce(cbind)),"sparseMatrix")
+  C_final <- diag(as.numeric(reduce(gg,~.x+.y))) - tcrossprod(gg %>% reduce(cbind))
+  C_final <- bdiag(C_final[2:nrow(C_final),2:ncol(C_final)],diag(rep(0,model_data$Wd-model_data$Nd),nrow =model_data$Wd-model_data$Nd))
+  C_final <- as(C_final,"dgCMatrix")
+  return(forceSymmetric(C_final))
+}
+
+
+
