@@ -27,7 +27,7 @@ prior_setup(
 \item{beta_logprec}{A values for the log precision of you fixed effect parameter.}
 }
 \value{
-A list that contains all the information needed for your prior to be fitted using abcoxph_fit.
+A list that contains all the information needed for your prior to be fitted using abcoxph_setup.
 }
 \description{
 Setting up your prior distributions to be used.

@@ -7,7 +7,8 @@
 abcox_fit(
   abcox_model,
   control = abcox_default_control(),
-  PARALLEL_EXECUTION = T
+  PARALLEL_EXECUTION = T,
+  method = ""
 )
 }
 \arguments{
